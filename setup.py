@@ -265,6 +265,7 @@ def normalGame(starter):
 		buyAllSkills(True)
 		buyLastQueens()
 		buyAllQueens()
+		starter = False
 
 	while True:
 		click(500, 4)
@@ -287,7 +288,7 @@ if device:
 	if (tournament):
 		tournamentStandards()
 	else:
-		normalGame(False)
+		normalGame(True)
 
 else:
 	print 'could not connect'
