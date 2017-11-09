@@ -35,7 +35,6 @@ def move(dY, direction):
 		device.drag((defaulXPosition, 2000), (defaulXPosition, 2000 - dY), 1.0, 10)
 	
 	sleep(0.2)
-
 	return
 
 def buyCrabEvolution(Y):
@@ -185,6 +184,7 @@ def buyLastQueens():
 
 	buyQueen(2400)
 	buyQueen(2100)
+
 	if (len(sys.argv) > 1):
 			if ((sys.argv[1] == "start") | (sys.argv[1] == "-i")):
 				buyQueen(1850)
