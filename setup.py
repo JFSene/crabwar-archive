@@ -69,10 +69,10 @@ def buyCrabLevels():
 	buyCrabEvolution(2000)
 	move(370, 'DOWN')
 	#comprar evo esmeralda
-	buyCrabEvolution(1900)
+	buyCrabEvolution(2000)
 	move(370, 'DOWN')
 	#comprar evo garnet
-	buyCrabEvolution(1900)
+	buyCrabEvolution(2000)
 
 	move(2000, 'UP')
 
@@ -203,7 +203,7 @@ def buyAllQueens():
 	sleep(0.2)
 
 	for x in range(0, 30):
-		buyQueen(1660)
+		buyQueen(1610)
 		move(queenCellHeight, 'DOWN')
 	
 	closeMenu()
