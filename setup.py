@@ -1,7 +1,12 @@
 from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice
-import sys
+import sys, thread
 
-global device
+device = None
+L = []
+
+initialGame = False
+clickTimes = 10000
+loopTimes = 5
 
 yMainTabPosition = 1380
 yPowerUpsPosition = 2250
@@ -48,30 +53,30 @@ def buyCrabEvolution(Y):
 def buyCrabLevels():
 	openMenu()
 
-	move(2000, 'UP')
-
-	#clique na posicao da tab de crab
+	#click on crab lvl tav
 	device.touch(crabTab, yMainTabPosition, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.2)
-	#long press para comprar lvl do crab
+	#move to top position on carb lvl tab
+	move(2000, 'UP')
+	#long press on crab lvl
 	device.touch(defaulXPosition, 1560, MonkeyDevice.DOWN)
 	sleep(1)
 	device.touch(defaulXPosition, 1560, MonkeyDevice.UP)
 	sleep(0.1)
-	#fim long press
+	#end long press
 
-	#comprar os 4000 lvl
+	#buy 4k crab lvls
 	for x in range(0, 4): 
 		device.touch(740, 1560, MonkeyDevice.DOWN_AND_UP)	
 		sleep(0.2)
 
-	#comprar evo ametista
+	#buy evo ametist
 	buyCrabEvolution(2000)
 	move(370, 'DOWN')
-	#comprar evo esmeralda
+	#buy evo emerald
 	buyCrabEvolution(2000)
 	move(370, 'DOWN')
-	#comprar evo garnet
+	#buy evo garnet
 	buyCrabEvolution(2000)
 
 	move(2000, 'UP')
@@ -79,15 +84,15 @@ def buyCrabLevels():
 	closeMenu()
 	return
 
-def buySkill(abilityLocation, talentLocation, starter):
+def buySkill(abilityLocation, talentLocation):
 	applyPosition = 1800
 
-	if (starter):
+	if (initialGame):
 		times = 50
 	else:
 		times = 5
 
-	if (starter):
+	if (initialGame):
 		for x in range (0, 4):
 			device.touch(defaulXPosition, abilityLocation, MonkeyDevice.DOWN_AND_UP)
 			sleep(0.2)
@@ -97,11 +102,11 @@ def buySkill(abilityLocation, talentLocation, starter):
 		device.touch(defaulXPosition, applyPosition, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.2)
 
-		#fecha janela
+		#close window
 		device.touch(1330, 700, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.2)
 
-	#comprar N levels
+	#buy lvls
 	for x in range(0, times):
 		device.touch(defaulXPosition, abilityLocation, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.1)
@@ -109,7 +114,7 @@ def buySkill(abilityLocation, talentLocation, starter):
 	return
 
 
-def buyAllSkills(starter):
+def buyAllSkills():
 	position1 = 1150
 	position3 = 1550
 	colossalYLocation = 1600
@@ -126,24 +131,24 @@ def buyAllSkills(starter):
 
 	move(1000, 'DOWN')
 
-	buySkill(goldenYLocation, position1, starter)
-	buySkill(geneticYLocation, position3, starter)
+	buySkill(goldenYLocation, position1)
+	buySkill(geneticYLocation, position3)
 	move(1000, 'UP')
-	buySkill(shadowYLocation, position3, starter)
-	buySkill(frenzyYLocation, position3, starter)
-	buySkill(smokeYLocation, position3, starter)
-	buySkill(colossalYLocation, position3, starter)
+	buySkill(shadowYLocation, position3)
+	buySkill(frenzyYLocation, position3)
+	buySkill(smokeYLocation, position3)
+	buySkill(colossalYLocation, position3)
 
 	closeMenu()
 	return
 
 def buyQueen(posicaoY):
-	#long press para comprar lvl do crab
+	#long press
 	device.touch(defaulXPosition, posicaoY, MonkeyDevice.DOWN)
 	sleep(1)
 	device.touch(defaulXPosition, posicaoY, MonkeyDevice.UP)
 	sleep(0.1)
-	#fim long press
+	#end long press
 
 	for i in range(0, 3):
 		device.touch(730, posicaoY, MonkeyDevice.DOWN_AND_UP)
@@ -153,12 +158,12 @@ def buyQueen(posicaoY):
 		device.touch(defaulXPosition, posicaoY, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.1)
 
-	#long press para comprar lvl do crab
+	#long press
 	device.touch(defaulXPosition, posicaoY, MonkeyDevice.DOWN)
 	sleep(1)
 	device.touch(defaulXPosition, posicaoY, MonkeyDevice.UP)
 	sleep(0.1)
-	#fim long press
+	#end long press
 
 	for i in range(0, 5):
 		device.touch(730, posicaoY, MonkeyDevice.DOWN_AND_UP)
@@ -185,10 +190,9 @@ def buyLastQueens():
 	buyQueen(2400)
 	buyQueen(2100)
 
-	if (len(sys.argv) > 1):
-			if ((sys.argv[1] == "start") | (sys.argv[1] == "-i")):
-				buyQueen(1850)
-				buyQueen(1600)
+	if (initialGame):
+		buyQueen(1850)
+		buyQueen(1600)
 	
 	closeMenu()
 	return
@@ -250,34 +254,51 @@ def baseGame(clicks, times):
 		buyLastQueens()
 		click(clicks, times)
 		buyLastQueens()
-		buyAllSkills(False)
+		buyAllSkills()
 
 	return
 
 try:
-    device = MonkeyRunner.waitForConnection(2)
+	global device
+	device = MonkeyRunner.waitForConnection(2)
 except:
-    device = None
+	global device
+	device = None
+
+initialGame = False
+clickTimes = 1000
+loopTimes = 5
 
 def startGame():
 	if device:
-		print 'connected!'
-
-		closeMenu()
+		global initialGame, clickTimes, loopTimes
 
 		if (len(sys.argv) > 1):
 			if ((sys.argv[1] == "start") | (sys.argv[1] == "-i")):
-				buyCrabLevels()
-				buyAllSkills(True)
-				buyLastQueens()
-				buyAllQueens()
+				initialGame = True
+			if (len(sys.argv) == 3):
+				clickTimes = int(sys.argv[1])
+				loopTimes = int(sys.argv[2])
+			if (len(sys.argv) == 4):
+				clickTimes = int(sys.argv[2])
+				loopTimes = int(sys.argv[3])
 
-		if (len(sys.argv) == 3):
-			baseGame(int(sys.argv[1]), int(sys.argv[2]))
-		elif (len(sys.argv) == 4):
-			baseGame(int(sys.argv[2]), int(sys.argv[3]))
-		else:
-			baseGame(1000, 5)
+		print "Start script with parameters"
+		print "Starter game: %r" % (initialGame)
+		print "Click times: %i" % (clickTimes)
+		print "Loops: %i" % (loopTimes)
+
+		closeMenu()
+
+		if (initialGame):
+			buyCrabLevels()
+			buyAllSkills()
+			buyLastQueens()
+			buyAllQueens()
+			initialGame = False
+			print "Initial setup ended."
+
+		baseGame(clickTimes, loopTimes)
 
 	else:
 		print 'could not connect'
