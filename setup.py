@@ -2,11 +2,6 @@ from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice
 import sys, thread
 
 device = None
-L = []
-
-initialGame = False
-clickTimes = 10000
-loopTimes = 5
 
 yMainTabPosition = 1380
 yPowerUpsPosition = 2250
