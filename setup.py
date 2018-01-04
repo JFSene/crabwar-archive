@@ -1,8 +1,6 @@
 from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice
 import sys, thread
 
-device = None
-
 S8yPositionCorrection = 0
 
 yMainTabPosition = 1380
@@ -217,7 +215,6 @@ def clickCancel():
 
 def clickPowerUps():
 	# Shadow Swarm
-	print S8yPositionCorrection
 	device.touch(382, yPowerUpsPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
 	# Smoke Screen
