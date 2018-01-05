@@ -270,9 +270,9 @@ def printHelp():
 	print("")
 	print("")
 	print("-help 			Start help")
-	print("-i 			Buy the first levels of everything when distance skiped after ECD")
-	print("-start 			Buy the first levels of everything when distance skiped after ECD")
+	print("-i | -start 			Buy the first levels of everything when distance skiped after ECD")
 	print("-s8 			Adjustment to improve accuracy on Galaxy S8")
+	print("-allQueens 			Buy all available queen levels")
 	print("-click 			Ver com Felipe")
 	print("-loop 			Ver com Felipe")
 	print("")
@@ -283,8 +283,9 @@ def startGame():
 		if arg == "--help":
 			printHelp()
 			return
-			
+
 	if device:
+		allQueensOnly = False
 		global initialGame, clickTimes, loopTimes, S8yPositionCorrection
 
 		for x in sys.argv:
@@ -292,6 +293,8 @@ def startGame():
 				S8yPositionCorrection = 200
 			if ((x == "-start") | (x == "-i")):
 				initialGame = True
+			if (x == "-allQueens"):
+				allQueensOnly = True
 
 			if x.find("=") > -1:
 				if x.find("click") > -1:
@@ -313,6 +316,9 @@ def startGame():
 			buyAllQueens()
 			initialGame = False
 			print "Initial setup ended."
+
+		if (allQueensOnly):
+			buyAllQueens()
 
 		baseGame(clickTimes, loopTimes)
 
