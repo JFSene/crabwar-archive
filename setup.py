@@ -266,7 +266,7 @@ loopTimes = 5
 
 def printHelp():
 	# esta desalinhado aqui mas no console fica de boa
-	print("uso: setup.py [--help] [-i] [-start] [-s8] [-click=<count>] [-loop=<count>]")
+	print("uso: setup.py [--help] [-i | start] [-s8] [-click=<count>] [-loop=<count>]")
 	print("")
 	print("")
 	print("-help 			Start help")
