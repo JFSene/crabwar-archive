@@ -264,14 +264,33 @@ initialGame = False
 clickTimes = 1000
 loopTimes = 5
 
+def printHelp():
+	# esta desalinhado aqui mas no console fica de boa
+	print("uso: setup.py [--help] [-i] [-start] [-s8] [-click=<count>] [-loop=<count>]")
+	print("")
+	print("")
+	print("-help 			Start help")
+	print("-i 			Buy the first levels of everything when distance skiped after ECD")
+	print("-start 			Buy the first levels of everything when distance skiped after ECD")
+	print("-s8 			Adjustment to improve accuracy on Galaxy S8")
+	print("-click 			Ver com Felipe")
+	print("-loop 			Ver com Felipe")
+	print("")
+	print("")
+
 def startGame():
+	for arg in sys.argv:
+		if arg == "--help":
+			printHelp()
+			return
+			
 	if device:
 		global initialGame, clickTimes, loopTimes, S8yPositionCorrection
 
 		for x in sys.argv:
-			if ((x == "s8") | (x == "S8")):
+			if ((x == "-s8") | (x == "-S8")):
 				S8yPositionCorrection = 200
-			if ((x == "start") | (x == "-i")):
+			if ((x == "-start") | (x == "-i")):
 				initialGame = True
 
 			if x.find("=") > -1:
