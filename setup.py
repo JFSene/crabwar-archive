@@ -271,17 +271,15 @@ def startGame():
 		for x in sys.argv:
 			if ((x == "s8") | (x == "S8")):
 				S8yPositionCorrection = 200
-
-		if (len(sys.argv) > 1):
-			if ((sys.argv[1] == "start") | (sys.argv[1] == "-i")):
+			if ((x == "start") | (x == "-i")):
 				initialGame = True
-			if (len(sys.argv) == 3):
-				clickTimes = int(sys.argv[1])
-				loopTimes = int(sys.argv[2])
-			if (len(sys.argv) == 4):
-				clickTimes = int(sys.argv[2])
-				loopTimes = int(sys.argv[3])
 
+			if x.find("=") > -1:
+				if x.find("click") > -1:
+					clickTimes = int(x.split("=")[1])
+				if x.find("loop") > -1:
+					loopTimes = int(x.split("=")[1])
+			
 		print "Start script with parameters"
 		print "Starter game: %r" % (initialGame)
 		print "Click times: %i" % (clickTimes)
