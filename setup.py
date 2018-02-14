@@ -254,26 +254,26 @@ def baseGame(clicks, times):
 	return
 
 def miniGame(times):
-	device.touch(1300, 600, MonkeyDevice.DOWN_AND_UP)
+	device.touch(1300, 600 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.5)
 	for n in range(0, times):
-		device.touch(1000, 2450, MonkeyDevice.DOWN_AND_UP)
+		device.touch(1000, 2450 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.5)
-		device.touch(1100, 1500, MonkeyDevice.DOWN_AND_UP)
+		device.touch(1100, 1500 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.5)
-		device.touch(1000, 2300, MonkeyDevice.DOWN_AND_UP)
+		device.touch(1000, 2300 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.5)
-		device.touch(1000, 2300, MonkeyDevice.DOWN_AND_UP)
+		device.touch(1000, 2300 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(3)
 		click(400, 1)
 		sleep(3)
-		device.touch(1000, 2300, MonkeyDevice.DOWN_AND_UP)
+		device.touch(1000, 2300 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(35)
-		device.touch(1350, 110, MonkeyDevice.DOWN_AND_UP)
+		device.touch(1350, 110 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(3)
 		click(400, 1)
 		sleep(3)
-		device.touch(500, 2300, MonkeyDevice.DOWN_AND_UP)
+		device.touch(500, 2300 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(3)
 
 try:
