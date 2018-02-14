@@ -1,5 +1,5 @@
 from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice
-import sys, thread
+import sys
 
 S8yPositionCorrection = 0
 
@@ -253,6 +253,29 @@ def baseGame(clicks, times):
 
 	return
 
+def miniGame(times):
+	device.touch(1300, 600, MonkeyDevice.DOWN_AND_UP)
+	sleep(0.5)
+	for n in range(0, times):
+		device.touch(1000, 2450, MonkeyDevice.DOWN_AND_UP)
+		sleep(0.5)
+		device.touch(1100, 1500, MonkeyDevice.DOWN_AND_UP)
+		sleep(0.5)
+		device.touch(1000, 2300, MonkeyDevice.DOWN_AND_UP)
+		sleep(0.5)
+		device.touch(1000, 2300, MonkeyDevice.DOWN_AND_UP)
+		sleep(3)
+		click(400, 1)
+		sleep(3)
+		device.touch(1000, 2300, MonkeyDevice.DOWN_AND_UP)
+		sleep(35)
+		device.touch(1350, 110, MonkeyDevice.DOWN_AND_UP)
+		sleep(3)
+		click(400, 1)
+		sleep(3)
+		device.touch(500, 2300, MonkeyDevice.DOWN_AND_UP)
+		sleep(3)
+
 try:
 	global device
 	device = MonkeyRunner.waitForConnection(2)
@@ -266,21 +289,22 @@ loopTimes = 5
 
 def printHelp():
 	# esta desalinhado aqui mas no console fica de boa
-	print("uso: setup.py [--help] [-i | start] [-s8] [-click=<count>] [-loop=<count>]")
+	print("uso: setup.py [-h | -help] [-i | start] [-s8] [-click=<count>] [-loop=<count>] [-miniGame=<count>]")
 	print("")
 	print("")
-	print("-help 			Start help")
-	print("-i | -start 			Buy the first levels of everything when distance skiped after ECD")
+	print("-h | -help 		Start help")
+	print("-i | -start 		Buy the first levels of everything when distance skiped after ECD")
 	print("-s8 			Adjustment to improve accuracy on Galaxy S8")
-	print("-allQueens 			Buy all available queen levels")
-	print("-click 			Ver com Felipe")
-	print("-loop 			Ver com Felipe")
+	print("-allQueens 		Buy all available queen levels")
+	print("-click 			Defines number of clicks per interaction")
+	print("-loop 			Defines number of interactions")
+	print("-miniGame		Start only miniGame with <count> iteractions")
 	print("")
 	print("")
 
 def startGame():
 	for arg in sys.argv:
-		if arg == "--help":
+		if arg == "-help":
 			printHelp()
 			return
 
@@ -289,11 +313,11 @@ def startGame():
 		global initialGame, clickTimes, loopTimes, S8yPositionCorrection
 
 		for x in sys.argv:
-			if ((x == "-s8") | (x == "-S8")):
+			if (x.lower() == "-s8"):
 				S8yPositionCorrection = 200
 			if ((x == "-start") | (x == "-i")):
 				initialGame = True
-			if (x == "-allQueens"):
+			if (x.lower() == "-allqueens"):
 				allQueensOnly = True
 
 			if x.find("=") > -1:
@@ -301,8 +325,13 @@ def startGame():
 					clickTimes = int(x.split("=")[1])
 				if x.find("loop") > -1:
 					loopTimes = int(x.split("=")[1])
+				if x.find("miniGame") > -1:
+					print("Start script only for miniGame")
+					miniGame(int(x.split("=")[1]))
+					return
 			
 		print "Start script with parameters"
+		print "Special: " + ("allQueens" if allQueensOnly else "None")
 		print "Starter game: %r" % (initialGame)
 		print "Click times: %i" % (clickTimes)
 		print "Loops: %i" % (loopTimes)
