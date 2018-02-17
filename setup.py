@@ -244,12 +244,22 @@ def click(times, loops):
 	return
 
 def baseGame(clicks, times):
+	buyStarters = 0
+
 	while True:
 		click(clicks, times)
 		buyLastQueens()
 		click(clicks, times)
 		buyLastQueens()
 		buyAllSkills()
+
+		if buyStarters >= 0:
+			buyStarters = buyStarters + clicks
+
+		if buyStarters > 20000:
+			buyCrabLevels()
+			buyAllQueens()
+			buyStarters = -1
 
 	return
 
