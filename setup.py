@@ -233,7 +233,8 @@ def click(times, loops):
 			clickCancel()
 
 def baseGame(clicks, times):
-	buyStarters = 0
+	global initialGame
+	clicksCounter = 0
 
 	while True:
 		click(clicks, times)
@@ -242,12 +243,15 @@ def baseGame(clicks, times):
 		buyLastQueens()
 		buyAllSkills()
 
-		if buyStarters >= 0:
-			buyStarters = buyStarters + clicks
+		if (buyStarters > -1):
+			if clicksCounter >= 0:
+				clicksCounter = clicksCounter + clicks
 
-		if buyStarters > 10000:
-			initial()
-			buyStarters = -1
+			if clicksCounter > buyStarters:
+				initialGame = True
+				initial()
+				clicksCounter = -1
+				initialGame = False
 
 def miniGame():
 	for n in range(0, miniGameTimes):
@@ -274,13 +278,14 @@ def miniGame():
 
 def printHelp():
 	# esta desalinhado aqui mas no console fica de boa
-	print("Usage: setup.py [-h | -help] [-i | start] [-s8] [-clicks=<count>] [-loops=<count>] [-miniGame=<count>]")
+	print("Usage: setup.py [-h | -help] [-i | start] [-s8] [-buy=<count>] [-clicks=<count>] [-loops=<count>] [-miniGame=<count>]")
 	print("")
 	print("")
 	print("-h | -help 		Start help")
 	print("-i | -start 		Buy the first levels of everything when distance skiped after ECD")
 	print("-s8 			Adjustment to improve accuracy on Galaxy S8")
 	print("-allQueens 		Buy all available queen levels (already included on start game)")
+	print("-buy			Buy all first levels after <count> clicks delay (overrides -start|-i argument)")
 	print("-loops 			Defines number of interactions")
 	print("-clicks 		Defines number of clicks per interaction")
 	print("-miniGame		Start miniGame with <count> iteractions")
@@ -294,13 +299,14 @@ showHelp = False
 initialGame = False
 runAllQueens = False
 miniGameTimes = 0
+buyStarters = -1
 clickTimes = 1000
 loopTimes = 5
 
 DEBUG = False
 
 def setParameters():
-	global showHelp, initialGame, miniGameTimes, clickTimes, loopTimes, runAllQueens, S8yPositionCorrection, DEBUG
+	global showHelp, initialGame, miniGameTimes, buyStarters, clickTimes, loopTimes, runAllQueens, S8yPositionCorrection, DEBUG
 
 	for arg in sys.argv:
 		if ((arg.lower() == "-help") | (arg.lower() == "-h")):
@@ -337,6 +343,12 @@ def setParameters():
 				except:
 					log("Loops without value")
 				continue
+			if x.find("buy") > -1:
+				try:
+					buyStarters = int(x.split("=")[1])
+				except:
+					log("Buy starters without value")
+				continue
 			if x.find("miniGame") > -1:
 				try:
 					miniGameTimes = int(x.split("=")[1])
@@ -347,11 +359,15 @@ def setParameters():
 	if (runAllQueens and initialGame):
 		runAllQueens = False
 
+	if (buyStarters > -1):
+		initialGame = False
+
 	log("")
 	log("Start with:")
 	log("Apply S8 correction: %r" % (S8yPositionCorrection > 0))
 	log("AllQueens: %r" % runAllQueens)
 	log("Starter game: %r" % initialGame)
+	log("Buy delay: %i" % buyStarters)
 	log("Click times: %i" % clickTimes)
 	log("Loops: %i" % loopTimes)
 	log("MiniGame: %i vezes" % miniGameTimes)
