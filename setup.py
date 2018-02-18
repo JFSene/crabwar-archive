@@ -14,19 +14,20 @@ crabTab = 120
 queenTab = 450
 abilityTab = 750
 
+def log(message):
+	if DEBUG:
+		print("DEBUG:: " + message)
+
 def sleep(time):
 	MonkeyRunner.sleep(time)
-	return
 
 def openMenu():
 	device.touch(1350, 2470 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.3)
-	return
 
 def closeMenu():
 	device.touch(1350, 1220 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.3)
-	return
 
 def move(dY, direction):
 	if (direction == 'UP'):
@@ -35,7 +36,6 @@ def move(dY, direction):
 		device.drag((defaulXPosition, 2000), (defaulXPosition, 2000 - dY), 1.0, 10)
 	
 	sleep(0.2)
-	return
 
 def buyCrabEvolution(Y):
 	for x in range(0, 10):
@@ -43,7 +43,6 @@ def buyCrabEvolution(Y):
 		sleep(0.5)
 		device.touch(defaulXPosition, Y + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.5)
-	return
 
 def buyCrabLevels():
 	openMenu()
@@ -77,7 +76,6 @@ def buyCrabLevels():
 	move(2000, 'UP')
 
 	closeMenu()
-	return
 
 def buySkill(abilityLocation, talentLocation):
 	applyPosition = 1800
@@ -106,8 +104,6 @@ def buySkill(abilityLocation, talentLocation):
 		device.touch(defaulXPosition, abilityLocation + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.1)
 
-	return
-
 
 def buyAllSkills():
 	position1 = 1150
@@ -135,7 +131,6 @@ def buyAllSkills():
 	buySkill(colossalYLocation, position3)
 
 	closeMenu()
-	return
 
 def buyQueen(posicaoY):
 	#long press
@@ -171,7 +166,6 @@ def buyQueen(posicaoY):
 	for j in range(0, 10):
 		device.touch(defaulXPosition, posicaoY + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.1)
-	return
 
 def buyLastQueens():
 	openMenu()
@@ -190,7 +184,6 @@ def buyLastQueens():
 		buyQueen(1600)
 	
 	closeMenu()
-	return
 
 def buyAllQueens():
 	openMenu()
@@ -206,12 +199,10 @@ def buyAllQueens():
 		move(queenCellHeight, 'DOWN')
 	
 	closeMenu()
-	return
 
 def clickCancel():
 	device.touch(450, 1450 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
-	return
 
 def clickPowerUps():
 	# Shadow Swarm
@@ -229,7 +220,6 @@ def clickPowerUps():
 	# Golden Leech
 	device.touch(1250, yPowerUpsPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
-	return
 
 def click(times, loops):
 	for n in range(0, loops):
@@ -241,7 +231,6 @@ def click(times, loops):
 			device.touch(300, 500 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 			sleep(0.01)
 			clickCancel()
-	return
 
 def baseGame(clicks, times):
 	buyStarters = 0
@@ -256,15 +245,12 @@ def baseGame(clicks, times):
 		if buyStarters >= 0:
 			buyStarters = buyStarters + clicks
 
-		if buyStarters > 20000:
-			buyCrabLevels()
-			buyAllQueens()
+		if buyStarters > 10000:
+			initial()
 			buyStarters = -1
 
-	return
-
-def miniGame(times):
-	for n in range(0, times):
+def miniGame():
+	for n in range(0, miniGameTimes):
 		device.touch(1300, 600 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.5)
 		device.touch(1000, 2450 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
@@ -286,82 +272,137 @@ def miniGame(times):
 		device.touch(500, 2300 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(3)
 
-try:
-	global device
-	device = MonkeyRunner.waitForConnection(2)
-except:
-	global device
-	device = None
-
-initialGame = False
-clickTimes = 1000
-loopTimes = 5
-
 def printHelp():
 	# esta desalinhado aqui mas no console fica de boa
-	print("uso: setup.py [-h | -help] [-i | start] [-s8] [-click=<count>] [-loop=<count>] [-miniGame=<count>]")
+	print("Usage: setup.py [-h | -help] [-i | start] [-s8] [-clicks=<count>] [-loops=<count>] [-miniGame=<count>]")
 	print("")
 	print("")
 	print("-h | -help 		Start help")
 	print("-i | -start 		Buy the first levels of everything when distance skiped after ECD")
 	print("-s8 			Adjustment to improve accuracy on Galaxy S8")
-	print("-allQueens 		Buy all available queen levels")
-	print("-click 			Defines number of clicks per interaction")
-	print("-loop 			Defines number of interactions")
-	print("-miniGame		Start only miniGame with <count> iteractions")
+	print("-allQueens 		Buy all available queen levels (already included on start game)")
+	print("-loops 			Defines number of interactions")
+	print("-clicks 		Defines number of clicks per interaction")
+	print("-miniGame		Start miniGame with <count> iteractions")
 	print("")
 	print("")
+	print("The precedence order is: initial or allQueens, minigame and base game")
+	print("")
+	print("")
+
+showHelp = False
+initialGame = False
+runAllQueens = False
+miniGameTimes = 0
+clickTimes = 1000
+loopTimes = 5
+
+DEBUG = False
+
+def setParameters():
+	global showHelp, initialGame, miniGameTimes, clickTimes, loopTimes, runAllQueens, S8yPositionCorrection, DEBUG
+
+	for arg in sys.argv:
+		if ((arg.lower() == "-help") | (arg.lower() == "-h")):
+			showHelp = True
+			break
+
+	for x in sys.argv:
+		if x.lower() == "-s8":
+			S8yPositionCorrection = 200
+			continue
+
+		if ((x.lower() == "-start") | (x.lower() == "-i")):
+			initialGame = True
+			continue
+
+		if x.lower() == "-allqueens":
+			runAllQueens = True
+			continue
+
+		if ((x.lower() == "-debug") | (x.lower() == "-d")):
+			DEBUG = True
+			continue
+
+		if x.find("=") > -1:
+			if x.find("clicks") > -1:
+				try:
+					clickTimes = int(x.split("=")[1])
+				except:
+					log("Clicks without value")
+				continue
+			if x.find("loops") > -1:
+				try:
+					loopTimes = int(x.split("=")[1])
+				except:
+					log("Loops without value")
+				continue
+			if x.find("miniGame") > -1:
+				try:
+					miniGameTimes = int(x.split("=")[1])
+				except:
+					log("Minigame without value")
+				continue
+
+	if (runAllQueens and initialGame):
+		runAllQueens = False
+
+	log("")
+	log("Start with:")
+	log("Apply S8 correction: %r" % (S8yPositionCorrection > 0))
+	log("AllQueens: %r" % runAllQueens)
+	log("Starter game: %r" % initialGame)
+	log("Click times: %i" % clickTimes)
+	log("Loops: %i" % loopTimes)
+	log("MiniGame: %i vezes" % miniGameTimes)
+	log("")
+
+def initial():
+	global initialGame
+
+	log("")
+	log("Initial setup start")
+	buyCrabLevels()
+	log(".")
+	buyAllSkills()
+	log(".")
+	buyLastQueens()
+	log(".")
+	buyAllQueens()
+	initialGame = False
+	log("Initial setup ended")
+	log("")
 
 def startGame():
-	for arg in sys.argv:
-		if arg == "-help":
-			printHelp()
-			return
+	connect()
+	setParameters()
+
+	if showHelp:
+		printHelp()
+		return
 
 	if device:
-		allQueensOnly = False
-		global initialGame, clickTimes, loopTimes, S8yPositionCorrection
-
-		for x in sys.argv:
-			if (x.lower() == "-s8"):
-				S8yPositionCorrection = 200
-			if ((x == "-start") | (x == "-i")):
-				initialGame = True
-			if (x.lower() == "-allqueens"):
-				allQueensOnly = True
-
-			if x.find("=") > -1:
-				if x.find("click") > -1:
-					clickTimes = int(x.split("=")[1])
-				if x.find("loop") > -1:
-					loopTimes = int(x.split("=")[1])
-				if x.find("miniGame") > -1:
-					print("Start script only for miniGame")
-					miniGame(int(x.split("=")[1]))
-					return
-			
-		print "Start script with parameters"
-		print "Special: " + ("allQueens" if allQueensOnly else "None")
-		print "Starter game: %r" % (initialGame)
-		print "Click times: %i" % (clickTimes)
-		print "Loops: %i" % (loopTimes)
-
 		closeMenu()
 
 		if (initialGame):
-			buyCrabLevels()
-			buyAllSkills()
-			buyLastQueens()
-			buyAllQueens()
-			initialGame = False
-			print "Initial setup ended."
+			initial()
 
-		if (allQueensOnly):
+		if (runAllQueens):
 			buyAllQueens()
+
+		if miniGameTimes > 0:
+			miniGame()
 
 		baseGame(clickTimes, loopTimes)
 
 	else:
-		print 'could not connect'
+		print "could not connect"
+
+def connect():
+	global device
+	try:
+		device = MonkeyRunner.waitForConnection(2)
+	except:
+		device = None
 
 startGame()
