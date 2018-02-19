@@ -255,6 +255,7 @@ def baseGame(clicks, times):
 
 def miniGame():
 	for n in range(0, miniGameTimes):
+		log("ciclo: %i" % ( n + 1 )) 
 		device.touch(1300, 600 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.5)
 		device.touch(1000, 2450 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
