@@ -16,18 +16,16 @@ abilityTab = 750
 
 def log(message):
 	if DEBUG:
-		print("DEBUG:: " + message)
+		print("CRABWAR:: " + message)
 
 def sleep(time):
 	MonkeyRunner.sleep(time)
 
 def openMenu():
-	log("Open menu")
 	device.touch(1350, 2470 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.3)
 
 def closeMenu():
-	log("Close menu")
 	device.touch(1350, 1220 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.3)
 
@@ -40,7 +38,6 @@ def move(dY, direction):
 	sleep(0.2)
 
 def buyCrabEvolution(Y):
-	log("Buying crab evolution")
 	for x in range(0, 10):
 		device.touch(defaulXPosition, Y + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.5)
@@ -68,13 +65,13 @@ def buyCrabLevels():
 		device.touch(740, 1560 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)	
 		sleep(0.2)
 
-	#buy evo ametist
+	log("Buying ametist evolution")
 	buyCrabEvolution(2000)
 	move(370, 'DOWN')
-	#buy evo emerald
+	log("Buying emerald evolution")
 	buyCrabEvolution(2000)
 	move(370, 'DOWN')
-	#buy evo garnet
+	log("Buying garnet evolution")
 	buyCrabEvolution(2000)
 
 	move(2000, 'UP')
@@ -212,19 +209,15 @@ def clickCancel():
 	sleep(0.01)
 
 def clickPowerUps():
-	log("Click Shadow Swarm")
+	log("Click PowerUps")
 	device.touch(382, yPowerUpsPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
-	log("Click Smoke Screen")
 	device.touch(629, yPowerUpsPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
-	log("Click Queen Frenzy")
 	device.touch(846, yPowerUpsPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
-	log("Click Genetic Split")
 	device.touch(1080, yPowerUpsPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
-	log("Click Golden Leech")
 	device.touch(1250, yPowerUpsPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
 
@@ -261,8 +254,9 @@ def baseGame(clicks, times):
 				initialGame = False
 
 def miniGame():
+	log("Starting Mini Game")
 	for n in range(0, miniGameTimes):
-		log("ciclo: %i" % ( n + 1 )) 
+		log("Ciclo: %i" % ( n + 1 )) 
 		device.touch(1300, 600 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.5)
 		device.touch(1000, 2450 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
@@ -285,7 +279,6 @@ def miniGame():
 		sleep(3)
 
 def printHelp():
-	# esta desalinhado aqui mas no console fica de boa
 	print("Usage: setup.py [-h | -help] [-i | start] [-s8] [-buy=<count>] [-clicks=<count>] [-loops=<count>] [-miniGame=<count>]")
 	print("")
 	print("")
@@ -387,11 +380,8 @@ def initial():
 	log("")
 	log("Initial setup start")
 	buyCrabLevels()
-	log(".")
 	buyAllSkills()
-	log(".")
 	buyLastQueens()
-	log(".")
 	buyAllQueens()
 	initialGame = False
 	log("Initial setup ended")
