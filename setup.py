@@ -22,10 +22,12 @@ def sleep(time):
 	MonkeyRunner.sleep(time)
 
 def openMenu():
+	log("Open menu")
 	device.touch(1350, 2470 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.3)
 
 def closeMenu():
+	log("Close menu")
 	device.touch(1350, 1220 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.3)
 
@@ -38,6 +40,7 @@ def move(dY, direction):
 	sleep(0.2)
 
 def buyCrabEvolution(Y):
+	log("Buying crab evolution")
 	for x in range(0, 10):
 		device.touch(defaulXPosition, Y + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.5)
@@ -45,6 +48,7 @@ def buyCrabEvolution(Y):
 		sleep(0.5)
 
 def buyCrabLevels():
+	log("Buying crab levels")
 	openMenu()
 
 	#click on crab lvl tav
@@ -106,6 +110,7 @@ def buySkill(abilityLocation, talentLocation):
 
 
 def buyAllSkills():
+	log("Buying all skills")
 	position1 = 1150
 	position3 = 1550
 	colossalYLocation = 1600
@@ -168,6 +173,7 @@ def buyQueen(posicaoY):
 		sleep(0.1)
 
 def buyLastQueens():
+	log("Buying last queens")
 	openMenu()
 
 	device.touch(queenTab, yMainTabPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
@@ -186,6 +192,7 @@ def buyLastQueens():
 	closeMenu()
 
 def buyAllQueens():
+	log("Buying all queens")
 	openMenu()
 
 	device.touch(queenTab, yMainTabPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
@@ -205,19 +212,19 @@ def clickCancel():
 	sleep(0.01)
 
 def clickPowerUps():
-	# Shadow Swarm
+	log("Click Shadow Swarm")
 	device.touch(382, yPowerUpsPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
-	# Smoke Screen
+	log("Click Smoke Screen")
 	device.touch(629, yPowerUpsPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
-	# Queen Frenzy
+	log("Click Queen Frenzy")
 	device.touch(846, yPowerUpsPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
-	# Genetic Split
+	log("Click Genetic Split")
 	device.touch(1080, yPowerUpsPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
-	# Golden Leech
+	log("Click Golden Leech")
 	device.touch(1250, yPowerUpsPosition + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 	sleep(0.01)
 
@@ -304,7 +311,7 @@ buyStarters = -1
 clickTimes = 1000
 loopTimes = 5
 
-DEBUG = False
+DEBUG = True
 
 def setParameters():
 	global showHelp, initialGame, miniGameTimes, buyStarters, clickTimes, loopTimes, runAllQueens, S8yPositionCorrection, DEBUG
@@ -328,7 +335,7 @@ def setParameters():
 			continue
 
 		if ((x.lower() == "-debug") | (x.lower() == "-d")):
-			DEBUG = True
+			DEBUG = False
 			continue
 
 		if x.find("=") > -1:
