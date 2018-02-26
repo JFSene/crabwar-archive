@@ -2,8 +2,6 @@ from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice
 import sys
 import datetime
 
-now = datetime.datetime.now()
-
 S8yPositionCorrection = 0
 
 yMainTabPosition = 1380
@@ -19,6 +17,7 @@ abilityTab = 750
 
 def log(message):
 	if DEBUG:
+		now = datetime.datetime.now()
 		print("CRABWAR::" + now.strftime("%H:%M:%S") + "::" + message)
 
 def sleep(time):
