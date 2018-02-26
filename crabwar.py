@@ -44,6 +44,18 @@ def buyCrabEvolution(Y):
 		device.touch(defaulXPosition, Y + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(0.5)
 
+def buyCrabEvolutionWithPattern(listOfPatterns):
+	for x in range(0, 10):
+		device.touch(defaulXPosition, 2000 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
+		sleep(0.5)
+
+		if listOfPatterns[x] == "R":
+			device.touch(defaulXPosition, 2000 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
+		else:
+			device.touch(420, 2000 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
+
+		sleep(0.5)	
+
 def buyCrabLevels():
 	log("Buying crab levels")
 	openMenu()
@@ -66,13 +78,16 @@ def buyCrabLevels():
 		sleep(0.2)
 
 	log("Buying ametist evolution")
-	buyCrabEvolution(2000)
+	buyCrabEvolutionWithPattern(["R","R","L","R","R","L","L","L","R","R"])
+	# buyCrabEvolution(2000)
 	move(370, 'DOWN')
 	log("Buying emerald evolution")
-	buyCrabEvolution(2000)
+	buyCrabEvolutionWithPattern(["R","R","L","R","R","R","L","L","R","R"])
+	# buyCrabEvolution(2000)
 	move(370, 'DOWN')
 	log("Buying garnet evolution")
-	buyCrabEvolution(2000)
+	buyCrabEvolutionWithPattern(["R","R","R","L","R","L","R","R","L","R"])
+	# buyCrabEvolution(2000)
 
 	move(2000, 'UP')
 
