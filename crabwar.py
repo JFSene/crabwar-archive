@@ -271,14 +271,14 @@ def miniGame():
 		sleep(3)
 		device.touch(1000, 2300 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(35)
-		device.press('KEYCODE_BACK','DOWN_AND_UP')
+		device.press('KEYCODE_BACK', MonkeyDevice.DOWN_AND_UP)
 		sleep(3)
 		click(400, 1)
 		sleep(3)
 		device.touch(500, 2300 + S8yPositionCorrection, MonkeyDevice.DOWN_AND_UP)
 		sleep(3)
 
-	device.press('KEYCODE_BACK','DOWN_AND_UP')
+	device.press('KEYCODE_BACK', MonkeyDevice.DOWN_AND_UP)
 
 def printHelp():
 	print("Usage: setup.py [-h | -help] [-i | start] [-s8] [-buy=<count>] [-clicks=<count>] [-loops=<count>] [-miniGame=<count>]")
